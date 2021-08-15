@@ -1,7 +1,7 @@
 # FlightManagementProgram
 This was a project that I made in C++ for one of my courses at the University of Calgary. It is a simple Flight Management System which is simulating a flight in console where you are able to add/remove passengers, view the seat map & passenger information, and save the data if desired. Please reach me at elgizabbasov2001@gmail.com if you have any questions or concerns.
 
-Demo Video: 
+# Demo Video: 
 
 https://user-images.githubusercontent.com/72108920/129465043-63c7fee2-8b6d-41b5-99e5-06c5d7cda288.mp4
 
