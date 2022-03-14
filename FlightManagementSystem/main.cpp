@@ -1,85 +1,117 @@
-/* Version 1.0
-* Elgiz Abbasov
-* ENSF 337 Term Project
-* June 15, 2020
+/**
+ * @file main.cpp
+ * @author Elgiz Abbasov (elgizabbasov2001@gmail.com)
+ * @brief ENSF 337 Term Project
+ * @version 0.1
+ * @date 2020-06-15
+ * 
+ * @copyright Elgiz Abbasov (c) 2022
+ * 
 */
+
 #include "Flight.h"
 #include <limits>
 #include <string>
 using namespace std;
-/* Function press_return is responsible for starting the program
-* with user's input being 'ENTER'
+
+/**
+ * @brief 
+ * Responsible for starting the program with Return key
+ * @return void 
 */
 void press_return() {
-    cout << "\n<<< Press Return to Continue>>>\n";
-    cout << "\n<<< Press Return to Continue>>>\n";
+    cout << "\n<<< Press Enter to Continue>>>\n";
+    cout << "\n<<< Press Enter to Continue>>>\n";
     cin.get();
 }
-/* Function display_head is responsible for displaying the header
-* information.
+
+/**
+ * @brief 
+ * Responsible for displaying the header
+ * information.
 */
 void display_head() {
-    cout << "Term Project - Flight Management Program in C++ \n";
-    cout << "Created by: Elgiz Abbasov \n";
-    cout << "Date: June 15, 2020 \n";
-    cout << "Email: elgizabbasov2001@gmail.com \n";
+    cout << "\nTerm Project - Flight Management Program in C++\n";
+    cout << "Created by: Elgiz Abbasov\n";
+    cout << "Date: June 15, 2020\n";
+    cout << "Email: elgizabbasov2001@gmail.com\n";
     press_return();
 }
+
 int str_to_int(string number) {
     int result = 0;
     for (int i = 0; i < (int)number.length(); i++)
         result = 10 * result + ((int)number.at(i) - 48);
     return result;
-
 }
 
-/* Function is_number is responsible for checking if the
-* string str is a number. Returns true if it is a number and
-* returns false otherwise.
+/**
+ * @brief 
+ * Responsible for checking if str is a number
+ * @param str user selection
+ * @return true
+ * If str the passed string is a number 
+ * @return false
+ * If its not a number 
 */
-bool is_number(const string& str)
-{
+bool is_number(const string& str){
     string::const_iterator it = str.begin();
+
     while (it != str.end() && isdigit(*it))
         ++it;
     return !str.empty() && it == str.end();
 }
-/* Function clean_input is responsible for clearing the input
-*
+
+/**
+ * @brief 
+ * Responsible for clearing the input
+ * 
+ * @return void 
 */
 void clean_input() {
     int res;
+    
     do {
         res = cin.get();
     } while (res != EOF && res != '\n');
 }
-/* Function demo is responsible for displaying the main menu
-* of the aircraft program.
-*/
 
+/**
+ * @brief 
+ * Responsible for displaying the main menu
+ * of the flight system.
+ * 
+ * @return int 
+*/
 int demo() {
-    string ch;
-    cout << "\nPlease select one the following options:\n";
-    cout << "[1] Display Flight Seat Map. \n";
+    string choice;
+    
+    cout << "\nPlease select one of the following options:\n";
+    cout << "\n[1] Display Flight Seat Map. \n";
     cout << "[2] Display Passengers Information.\n";
     cout << "[3] Add a New Passenger. \n";
     cout << "[4] Remove an Existing Passenger. \n";
     cout << "[5] Save data. \n";
     cout << "[6] Quit. \n";
-    cout << "Enter your choice: (1, 2, 3, 4, 5 or 6): ";
-    cin >> ch;
-    while ((is_number(ch) && str_to_int(ch) <= 0) || !is_number(ch) || (is_number(ch) && str_to_int(ch) > 6)) {
+    cout << "\nEnter your choice: (1, 2, 3, 4, 5 or 6): ";
+    cin >> choice;
+
+    while ((is_number(choice) && str_to_int(choice) <= 0) || !is_number(choice) || (is_number(choice) && str_to_int(choice) > 6)) {
         clean_input();
         cout << "\nPlease only enter numbers from 1 to 6: ";
-        cin >> ch;
+        cin >> choice;
         cout << "\n";
     }
 
-    return  str_to_int(ch);
+    return str_to_int(choice);
 }
-/* Function populate_flight_from_file is responsible for
-* populating the aircraft with the information from a passed
-* file.
+
+/**
+ * @brief 
+ * Responsible for populating the flight 
+ * with the information from a passed .txt file.
+ * @param file_name Text file with data
+ * @return Flight instance 
 */
 Flight populate_flight_from_file(string file_name) {
     ifstream inFile(file_name, ios::in);
@@ -88,22 +120,26 @@ Flight populate_flight_from_file(string file_name) {
         cout << "Unable to open file... quitting \n";
         exit(1);
     }
+
     Flight f;
     int flight_row, flight_seat;
     string flight_name;
+
     inFile >> flight_name >> flight_row >> flight_seat;
+    
     f.set_flight_name(flight_name);
     f.set_flight_row(flight_row);
     f.set_flight_seat(flight_seat);
-    string first_name, last_name, phone, seat, row, id;
-    string line;
+
+    string line, first_name, last_name, phone, seat, row, id;
+
     while (!inFile.eof()) {
         getline(inFile, line);
         first_name = line.substr(0, 19);
         last_name = line.substr(first_name.length(), 20);
         phone = line.substr(first_name.length() + last_name.length(), 21);
         seat = line.substr(first_name.length() + last_name.length() + phone.length(), 4);
-        id = line.substr(first_name.length() + last_name.length() + phone.length() + seat.length(), 5);
+        id = line.substr(first_name.length() + last_name.length() + phone.length() + seat.length(), 6);
         f.set_passenger(first_name, last_name, id, phone, seat);
     }
 
@@ -111,39 +147,44 @@ Flight populate_flight_from_file(string file_name) {
     return f;
 }
 
-
+/**
+ * @brief 
+ * The Start
+ * Call appropriate function based on user selection
+*/
 int main() {
-    Flight f;
+    Flight flight_i;
+    
     display_head();
-    f = populate_flight_from_file("C:\\Users\\elgiz\\source\\repos\\SampleProject\\SampleProject\\flight-info.txt");
-    int sel;
+    
+    flight_i = populate_flight_from_file("..\\FlightManagementSystem\\flight-info.txt");
+    
+    int selection;
 
-    while ((sel = demo())) {
-        switch (sel) {
+    while ((selection = demo())) {
+        switch (selection) {
         case 1:
-            f.show_map();
+            flight_i.show_map();
             press_return();
             break;
         case 2:
-            f.display_passenger(f);
+            flight_i.display_passenger(flight_i);
             press_return();
             break;
         case 3:
-            f.add_passenger(f);
+            flight_i.add_passenger(flight_i);
             break;
         case 4:
-            f.remove_passenger(f);
+            flight_i.remove_passenger(flight_i);
             break;
         case 5:
-            f.save_info(f, "C:\\Users\\elgiz\\source\\repos\\SampleProject\\SampleProject\\flight-info.txt");
+            flight_i.save_info(flight_i, "..\\FlightManagementSystem\\flight-info.txt");
             break;
         case 6:
-            cout << "Program terminated.";
+            cout << "\nProgram terminated. Thanks for using the Flight Management System.\n";
             exit(1);
             break;
         }
     }
     return 0;
-
 }
-

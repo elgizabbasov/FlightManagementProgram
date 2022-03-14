@@ -1,27 +1,38 @@
-/* Class Flight is responsible for the removal, addition, and displaying passengers.
-* Version 1.0
-* Elgiz Abbasov
-* ENSF 337 Term Project
+/**
+ * @file Flight.cpp
+ * @author Elgiz Abbasov (elgizabbasov2001@gmail.com)
+ * @brief Responsible for the removal, addition, and displaying passengers.
+ * @version 0.1
+ * @date 2020-06-15
+ * 
+ * @copyright Elgiz Abbasov (c) 2022
+ * 
 */
+
 #include "Flight.h"
 #include <iostream>
 #include <vector>
+#include <string>
 using namespace std;
 
-Flight::Flight() :f_row(0), f_seat(0), f_name("") {
-}
+Flight::Flight() :f_row(0), f_seat(0), f_name("") {}
+
 int Flight::get_flight_row() {
     return f_row;
 }
+
 int Flight::get_flight_seat() {
     return f_seat;
 }
+
 string Flight::get_flight_name() {
     return f_name;
 }
+
 void Flight::get_seat_map_size() {
     cout << "Number of Rows: " << seat_map.size() << " Number of Seats: " << seat_map.at(0).size() << "\n";
 }
+
 vector<Passenger> Flight::get_passenger_list() {
     return passenger;
 }
@@ -31,12 +42,15 @@ void Flight::set_flight_seat(int seat) {
     for (int k = 0; k < f_row; k++)
         seat_map.at(k).resize(seat);
 }
+
 void Flight::set_passenger_list(vector <Passenger> list) {
     passenger = list;
 }
+
 void Flight::set_flight_name(string name) {
     f_name = name;
 }
+
 void Flight::set_flight_row(int row) {
     f_row = row;
     seat_map.resize(row);
@@ -45,7 +59,8 @@ void Flight::set_flight_row(int row) {
 void Flight::set_passenger_list_size() {
     passenger.reserve(f_row * f_seat);
 }
-/* Function set_seat is responsible for setting up the
+
+/** Function set_seat is responsible for setting up the
 * row and seat chosen by the passenger.
 */
 void Flight::set_seat(string seat) {
@@ -64,7 +79,25 @@ void Flight::set_seat(string seat) {
         seat_map.at(str_to_int(seat_number)).at(sch).set_mark("X");
     }
 }
-/* Function erase_seat is responsible for setting up the
+
+/** Function to trim a string of whitespaces
+ * from start and end.
+ * 
+*/
+string trim(const string& str,
+                 const string& whitespace = " \t")
+{
+    const auto strBegin = str.find_first_not_of(whitespace);
+    if (strBegin == string::npos)
+        return ""; // no content
+
+    const auto strEnd = str.find_last_not_of(whitespace);
+    const auto strRange = strEnd - strBegin + 1;
+
+    return str.substr(strBegin, strRange);
+}
+
+/** Function erase_seat is responsible for setting up the
 * row and seat chosen by the passenger.
 */
 void Flight::erase_seat(string seat) {
@@ -76,16 +109,18 @@ void Flight::erase_seat(string seat) {
         else
             seat_letter.push_back(seat[k]);
     }
-    int sch = (int)(seat_letter[0] - 'A');
+
+    string c_letter = trim(seat_letter);
+    int sch = (int)(c_letter[0] - 'A');
     seat_map.at(str_to_int(seat_number)).at(sch).set_mark(" ");
 }
-/* Function set_passenger is responsible for setting up the passenger's
+
+/** Function set_passenger is responsible for setting up the passenger's
 * information. first_name is the first name of the passenger, last_name
 * is the last name of the passenger and id, phone and seat
 * are also passengers information.
 */
-void Flight::set_passenger(string first_name, string last_name, string id, string phone, string seat)
-{
+void Flight::set_passenger(string first_name, string last_name, string id, string phone, string seat) {
     if (first_name.length() < 20)
         first_name.append(20 - first_name.length(), ' ');
     if (last_name.length() < 20)
@@ -100,8 +135,8 @@ void Flight::set_passenger(string first_name, string last_name, string id, strin
     Passenger new_p(first_name, last_name, id, phone, seat);
     passenger.push_back(new_p);
 }
-void Flight::set_seat_map_size(int row, int seat)
-{
+
+void Flight::set_seat_map_size(int row, int seat) {
     seat_map.resize(row);
     for (int k = 0; k < row; k++)
         seat_map.at(k).resize(seat);
@@ -111,11 +146,10 @@ void Flight::set_seat_map(vector <vector<Seat>> seat) {
     seat_map = seat;
 }
 
-/* Function showMap is responsible for displaying the aircraft's
+/** Function showMap is responsible for displaying the aircraft's
 * seats.
 */
-void Flight::show_map()
-{
+void Flight::show_map() {
     cout << "\n\t   Aircraft Seat Map \n\n    ";
     cout << "    ";
     for (int k = 0; k < f_seat; k++) {
@@ -157,7 +191,8 @@ void Flight::show_map()
     }
     cout << "\n";
 }
-/* Function str_to_int is responsible for changing the argument number
+
+/** Function str_to_int is responsible for changing the argument number
 * from string to integer.
 */
 int Flight::str_to_int(string number) {
@@ -167,7 +202,8 @@ int Flight::str_to_int(string number) {
     return result;
 
 }
-/* Function checkId is responsible for checking the passed id with
+
+/** Function checkId is responsible for checking the passed id with
 * the id's in data. If id is matched, function returns false and
 * returns true otherwise.
 */
@@ -178,7 +214,8 @@ bool Flight::check_id(string id) {
     }
     return true;
 }
-/* Function check_seat is responsible for checking the avaliability of the
+
+/** Function check_seat is responsible for checking the avaliability of the
 * passed string seat. Returns false if the seat is taken and returns
 * true otherwise.
 */
@@ -202,18 +239,20 @@ bool Flight::check_seat(string st) {
         return true;
 
 }
-/* Function isNumber is responsible for checking if the
+
+/** Function isNumber is responsible for checking if the
 * string n is a number. Returns true if it is a number and
 * returns false otherwise.
 */
-bool Flight::is_number(const string& n)
-{
+bool Flight::is_number(const string& n) {
     string::const_iterator it = n.begin();
+
     while (it != n.end() && isdigit(*it))
         ++it;
     return !n.empty() && it == n.end();
 }
-/* Function hasNum is responsible for checking if the
+
+/** Function hasNum is responsible for checking if the
 * string str has a number in it. Returns true if it does
 * have a number and returns false otherwise.
 */
@@ -223,7 +262,8 @@ bool Flight::has_num(const string& str) {
     else
         return false;
 }
-/* Function hasLet is responsible for checking if the
+
+/** Function hasLet is responsible for checking if the
 * string st has a letter in it. Returns true if it does
 * have a letter and returns false otherwise.
 */
@@ -234,17 +274,22 @@ bool Flight::has_let(const string& st) {
         return false;
 }
 
-/* Function add_passenger is responsible for adding the passenger
+/** Function add_passenger is responsible for adding the passenger
 * info to the database. setPassenger function is called within
 * add_passenger to set up the passenger info.
 */
-
 void Flight::add_passenger(Flight& f) {
     string first_name, last_name, phone, seat, id, row;
     char avSeat = 'A' + get_flight_seat() - 1;
 
     cout << "Please enter a number for the passenger id: ";
     cin >> id;
+    
+    while (id.length() > 5){
+        cout << "Please enter an id with less than 6 characters: ";
+        cin >> id;
+    }
+    
     while (!is_number(id) || (is_number(id) && !check_id(id)))
     {
         cin.clear();
@@ -285,7 +330,7 @@ void Flight::add_passenger(Flight& f) {
         cin >> phone;
     }
 
-    cout << "Enter the passenger's desired row: ";
+    cout << "Enter the passenger's desired row (0-19): ";
     cin >> row;
     while (!is_number(row) || (is_number(row) && str_to_int(row) < 0) || (is_number(row) && str_to_int(row) >= get_flight_row())) {
         cin.clear();
@@ -293,26 +338,30 @@ void Flight::add_passenger(Flight& f) {
         cout << "Invalid input, please try again: ";
         cin >> row;
     }
-seat_try_again:
-    cout << "Enter the passenger's desired seat: ";
-    cin >> seat;
-    while (seat.compare(string(1, avSeat)) > 0 || seat.compare("A") < 0) {
-        cin.clear();
-        cout << "Invalid input, please try again: ";
+    
+    seat_try_again:
+        cout << "Enter the passenger's desired seat (A, B, C, D, or E): ";
         cin >> seat;
-    }
-    if (check_seat(row + seat) == false) {
-        cout << "This seat is taken, please try again. \n";
-        goto seat_try_again;
-    }
+        
+        while (seat.compare(string(1, avSeat)) > 0 || seat.compare("A") < 0) {
+            cin.clear();
+            cout << "Invalid input, please try again: ";
+            cin >> seat;
+        }
+
+        if (check_seat(row + seat) == false) {
+            cout << "This seat is taken, please try again. \n";
+            goto seat_try_again;
+        }
+
     string fin_seat = row + seat;
     set_passenger(first_name, last_name, id, phone, fin_seat);
     cout << "Passenger was added. \n";
 }
-/* Function displayPassenger is responsible for displaying
+
+/** Function display_passenger is responsible for displaying
 * passenger information.
 */
-
 void Flight::display_passenger(Flight& f) {
     cout << "\nFirst Name\t   Last Name\t\tPhone\t\t   Row\t  Seat\t  ID\n";
     cout << "-------------------------------------------------------------------------------\n";
@@ -322,13 +371,17 @@ void Flight::display_passenger(Flight& f) {
         cout << "-------------------------------------------------------------------------------\n";
     }
 }
-/* Function removePass is responsible erasing the passenger
+
+/** Function removePass is responsible erasing the passenger
 * with the id that matches the id passed to the function.
 */
 string Flight::remove_pass(string id) {
     string res;
+
     for (int i = 0; i < (int)passenger.size(); i++) {
-        if (passenger.at(i).get_id().compare(id) == 0) {
+        string p_id = passenger.at(i).get_id();
+        p_id = trim(p_id);
+        if (p_id == id) {
             res = passenger.at(i).get_seat().get_row() + passenger.at(i).get_seat().get_seat();
             erase_seat(res);
             passenger.erase(passenger.begin() + i);
@@ -337,11 +390,13 @@ string Flight::remove_pass(string id) {
     }
     return "\nPassenger was not deleted, ID not found. \n";
 }
-/* Function remove_passenger is responsible erasing the passenger
+
+/** Function remove_passenger is responsible erasing the passenger
 * information from the database.
 */
 void Flight::remove_passenger(Flight& f) {
     string pass_id;
+    
     cout << "Please enter a number for the passenger id: ";
     cin >> pass_id;
     while (!is_number(pass_id)) {
@@ -352,11 +407,13 @@ void Flight::remove_passenger(Flight& f) {
     }
     cout << remove_pass(pass_id);
 }
-/* Function save_info is responsible saving the passengers'
+
+/** Function save_info is responsible saving the passengers'
 * information to a text file.
 */
 void Flight::save_info(Flight& f, string file_name) {
     ofstream outFile(file_name);
+
     if (outFile.fail()) {
         cout << "File cant be opened " << file_name << "\n";
         exit(1);
@@ -364,7 +421,7 @@ void Flight::save_info(Flight& f, string file_name) {
 
     string ans = "";
 
-    cout << "Do you want to save the data in the “" << file_name << "”? Please answer <Y or N> ";
+    cout << "Are you sure you want to overwrite the data in " << file_name << "? Please answer <Y> or <N>: ";
     cin >> ans;
     while (ans.compare("N") != 0 && ans.compare("Y") != 0) {
         cin.clear();
@@ -378,13 +435,12 @@ void Flight::save_info(Flight& f, string file_name) {
             cout << "File cant be opened. \n";
             exit(1);
         }
-        outFile << f.get_flight_name() << " " << f.get_flight_row() << " " << f.get_flight_seat();
+        outFile << f.get_flight_name() << "   " << f.get_flight_row() << "    " << f.get_flight_seat();
         for (int i = 0; i < (int)f.get_passenger_list().size(); i++) {
             outFile << f.get_passenger_list().at(i).to_string();
         }
-        cout << "All the data in the passenger list was saved into the " << file_name << ". \n";
+        cout << "\nAll the data in the passenger list was saved into the " << file_name << ". \n";
     }
     else
-        cout << "Unable to save. \n";
+        cout << "\nUnable to save. \n";
 }
-

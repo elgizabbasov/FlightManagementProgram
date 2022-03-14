@@ -18,5 +18,4 @@ public:
     void set_seat(string seat);
     void set_mark(string m);
     void set_row(string r);
-
 };

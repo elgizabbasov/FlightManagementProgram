@@ -6,6 +6,7 @@
 #include <cctype>
 #include <algorithm>
 using namespace std;
+
 class Flight {
 private:
     int f_row;
@@ -15,7 +16,6 @@ private:
     vector<Passenger> passenger;
 
 public:
-
     Flight();
     string get_flight_name();
     int get_flight_row();
@@ -45,7 +45,3 @@ public:
     void remove_passenger(Flight& f);
     void save_info(Flight& f, string file_name);
 };
-
-
-
-

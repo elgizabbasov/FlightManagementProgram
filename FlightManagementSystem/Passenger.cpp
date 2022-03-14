@@ -1,10 +1,17 @@
-/* Class Seat is responsible for getting and setting the passenger's seat, row info.
-* Version 1.0
-* Elgiz Abbasov
-* ENSF 337 Term Project
+/**
+ * @file Passenger.cpp
+ * @author Elgiz Abbasov (elgizabbasov2001@gmail.com)
+ * @brief Responsible for getting and setting the passenger's information.
+ * @version 0.1
+ * @date 2020-06-15
+ * 
+ * @copyright Elgiz Abbasov (c) 2022
+ * 
 */
+
 #include "Passenger.h"
 using namespace std;
+
 Passenger::Passenger(string first_name, string last_name, string id, string phone, string seat) {
 	this->first_name = first_name;
 	this->last_name = last_name;
@@ -53,13 +60,15 @@ void Passenger::set_id(string id) {
 	this->id = id;
 }
 
-
 string Passenger::to_string() {
 	string str = first_name + last_name + phone + passenger_seat.get_row() + passenger_seat.get_seat() + id + "\n";
 	return str;
 }
-/* Function displayPassenger is responsible for displaying the
-* passenger information.
+
+/**
+ * @brief 
+ * Responsible for displaying the
+ * passenger information.
 */
 void Passenger::display_passenger() {
 	cout << first_name << last_name << phone << passenger_seat.get_row() << "\t   " << passenger_seat.get_seat() << "\t" << id << endl;
