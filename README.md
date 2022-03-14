@@ -1,4 +1,4 @@
-# FlightManagementProgram
+# Flight Management Program
 This was a project that I made in C++ for one of my courses at the University of Calgary. It is a simple Flight Management System which is simulating a flight program in terminal where you are able to add/remove passengers, view the seat map & passenger information, and save the data to a text file if desired. Please reach me at elgizabbasov2001@gmail.com if you have any questions or concerns.
 # How to Run:
 Clone the repo to a local folder and in the terminal type following commands:
